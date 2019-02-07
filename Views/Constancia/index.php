@@ -37,7 +37,6 @@
 						<div  id="target-search">
                         <div class="content table-responsive table-full-width">
                             <table id="tableUnidades" class="table table-hover table-striped">
-
                                 <thead>
                                     <th>Numero de Guia</th>
                                     <th>Tractor</th>
@@ -47,10 +46,11 @@
                                     <th>Kilometraje</th>
                                     <th>FechaPrograma</th>
                                     <th>FechaCarga</th>
+                                    <th>Observación</th>
                                 </thead>
  								<?php foreach($this->model->Listar() as $r): ?>
                                         <tr>
-                                            <td><?php echo $r->numeroguia; ?></td>
+                                            <td><?php echo $r->serie."-".$r->numero; ?></td>
                                             <td><?php echo $r->idplaca; ?></td>
                                             <td><?php echo	$r->cisterna;     ?></td>
 											<td><?php echo	$r->volumen; ?></td>
@@ -58,11 +58,12 @@
 											<td><?php echo	$r->kilometraje; ?></td>
 											<td><?php echo	$r->fechaprg; ?></td>
 											<td><?php echo	$r->fechacarga; ?></td>
+                                            <td><?php echo  $r->observacion; ?></td>
                                         </tr>
                                  <?php endforeach; ?>
 
                                 </tbody>
 
                             </table>
-                        
+                        
                         </div>

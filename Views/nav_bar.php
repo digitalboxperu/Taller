@@ -28,7 +28,7 @@
   </header>
   </div>
 </div>-->
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark" id="escondete" style="">
   <a href="#" class="navbar-brand" >Sistema</a>
   <button class="navbar-toggler" data-toggle="collapse" 
   data-target="#navbarmenu">

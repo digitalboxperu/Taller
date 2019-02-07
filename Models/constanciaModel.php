@@ -14,7 +14,10 @@ class Constancia
 	public $fechaprg;
 	public $fechacarga;
 	public $checklist;
-	
+	public $serie;
+	public $numero;
+	public $observacion;
+
 	public $capacidad;
 	function __construct()
 	{
@@ -46,14 +49,44 @@ class Constancia
 			//$constancia->kilometraje=$ovehiculo3->kilometraje;
 
 			//constancia->numeroguia=$constancia->numeroguia_serie."-".$constancia->numeroguia_cliente;
-			$stmt= $this->pdo->prepare( "INSERT INTO constancia (numeroguia, idplaca, cisterna, volumen, recorrido, kilometraje, 
-            fechaprg, fechacarga, checklist) 
-			        VALUES (' ".$constancia->numeroguia."',". $constancia->idplaca.",".$constancia->cisterna.",".$constancia->volumen.",".$constancia->recorrido.",".$constancia->kilometraje.",'".$constancia->fechaprg."','".$constancia->fechacarga."',".$constancia->checklist .") ; " );
 			$this->pdo->beginTransaction();
-			$stmt->execute();
+			$stmt2= $this->pdo->prepare( "SELECT id FROM vehiculo WHERE placa='".$constancia->idplaca."'");
+			$stmt2->execute();
 			$this->pdo->commit();
 
-			return true;
+			if ($stmt2->rowCount()!=0){
+				$objeto=$stmt2->fetchAll(PDO::FETCH_OBJ);
+				$verdaderoObjeto=$objeto[0];
+
+				$idplaca=$verdaderoObjeto->id;
+				$this->pdo->beginTransaction();
+				$stmt3= $this->pdo->prepare( "SELECT id FROM vehiculo WHERE placa='".$constancia->cisterna."'");
+				
+				$stmt3->execute();
+				if($stmt3->rowCount()!=0){
+				$this->pdo->commit();
+				$objeto2=$stmt3->fetchAll(PDO::FETCH_OBJ);
+				$verdaderoObjeto2=$objeto2[0];
+				$idplacacisterna=$verdaderoObjeto2->id;
+				}
+			}
+			else{
+				$idplaca=2;
+				$idplacacisterna=1;
+			}
+			$stmt= $this->pdo->prepare( "INSERT INTO constancia (idplaca, cisterna, volumen, recorrido, kilometraje,
+            fechaprg, fechacarga, checklist, serie, numero,observacion) 
+			        VALUES (".$idplaca.",".$idplacacisterna.",".$constancia->volumen.",".$constancia->recorrido.",".$constancia->kilometraje.",'".$constancia->fechaprg."','".$constancia->fechacarga."',".$constancia->checklist .",'".$constancia->serie."','".$constancia->numero."','".$constancia->observacion."' )  returning  id ;");
+			/*echo "ESTO ES "."INSERT INTO constancia (idplaca, cisterna, volumen, recorrido, kilometraje,
+            fechaprg, fechacarga, checklist, serie, numero,observacion) 
+			        VALUES ( ". $idplaca.",".$idplacacisterna.",".$constancia->volumen.",".$constancia->recorrido.",".$constancia->kilometraje.",'".$constancia->fechaprg."','".$constancia->fechacarga."',".$constancia->checklist .",'".$constancia->serie."','".$constancia->numero."','".$constancia->observacion."' ) ; ";*/
+			$this->pdo->beginTransaction();
+			$stmt->execute();
+			$Oid=$stmt->fetchAll(PDO::FETCH_OBJ);
+			$Oid=$Oid[0];
+			$id_constancia=$Oid->id;
+			$this->pdo->commit();
+			return $id_constancia;
 		} catch (Exception $e) 
 		{
 			echo $e;
@@ -108,7 +141,6 @@ class Constancia
 				$constancia->capacidad=-2;
 				return $constancia;
 			}
-
 			$stmt2= $this->pdo->prepare("SELECT idplaca2,placa,capacidad FROM vehiculo WHERE id=".$placa2);
 			$stmt2->execute();
 
@@ -120,12 +152,38 @@ class Constancia
 				$constancia->capacidad=-2;
 				return $constancia;
 			}
-
 			return $ovehiculo2[0];
+			
 		} catch (Exception $e) 
 		{
 			die($e->getMessage());
 		}	
+	}
+	public function BuscarplacaCisterna($placa){
+		$this->pdo->beginTransaction();
+		$stmt2= $this->pdo->prepare("SELECT idplaca2,placa,capacidad FROM vehiculo WHERE placa='".$placa."'");
+		$stmt2->execute();
+		if($stmt2->rowCount()!= 0)
+		{
+			$objeto = $stmt2->fetchAll(PDO::FETCH_OBJ);
+			$fila =$objeto[0];
+			return $fila;
+		}
+		else{
+			$fila=new Constancia;
+			$fila->capacidad=-1;
+			return $fila;
+		}
+	}
+
+	public function guarda_detalle($dia,$lugar,$inicio,$fin,$excesovelocidad,$idconstancia)
+	{
+		$this->pdo->beginTransaction();
+		$diferencia=2;
+		$stmt2= $this->pdo->prepare("INSERT INTO det_constancia(idconstancia, dia, lugar, inicio, fin, diferencia, excesovelo)VALUES (".$idconstancia.",".$dia.",'". $lugar."','".$inicio."','".$fin."',".$diferencia.",".$excesovelocidad.");" );
+		/*echo "INSERT INTO det_constancia(idconstancia, dia, lugar, inicio, fin, diferencia, excesovelo)VALUES (".$idconstancia.",".$dia.",'". $lugar."','".$inicio."','".$fin."',".$diferencia.",".$excesovelocidad.");";*/
+		$stmt2->execute();
+		$this->pdo->commit();
 	}
 }
 ?>

@@ -7,6 +7,7 @@
 			Login
 		</h1></center>
 		</div>
+		<h4><span class="text-danger">Su Usuario o Contraseña no corresponde</span></h4>
 		<div class="card-body">
 		<form method="POST" action="<?php echo BASE_URL;?>Home/Registrar" >
 			<div class="form-group">
