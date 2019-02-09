@@ -28,6 +28,8 @@
   </header>
   </div>
 </div>-->
+<!--navbar-dark bg-dark-->
+<!--navbar navbar-expand-sm  navbar-light  bg-secondary-->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark" id="escondete" style="">
   <a href="#" class="navbar-brand" >Sistema</a>
   <button class="navbar-toggler" data-toggle="collapse" 
@@ -36,7 +38,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarmenu">
   <ul class="navbar-nav ">
-    <li class="nav-item">
+    <li class="nav-item active">
       <a href="<?php echo BASE_URL;?>Constancia" class="nav-link">Constancias</a>
     </li>
      <li class="nav-item">

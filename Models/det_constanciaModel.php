@@ -78,5 +78,10 @@ class Det_constancia
 			die($e->getMessage());
 		}
 	}
+
+	public function modeldetalle()
+	{
+		
+	}
 }
 ?>

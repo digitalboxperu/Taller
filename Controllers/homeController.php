@@ -16,7 +16,7 @@ class HomeController{
     public function Index(){
         //header('Location:'.BASE_URL.'Home');
         require_once 'Views/header.php';
-        require_once 'Views/nav_bar.php';
+        //require_once 'Views/nav_bar.php';
         require_once 'Views/Home/index.php';
         require_once 'Views/footer.php';
     }

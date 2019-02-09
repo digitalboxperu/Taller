@@ -2,7 +2,7 @@
 
    define('DB_SERVER', 'localhost');
    define('DB_USERNAME', 'postgres');
-   define('DB_PASSWORD', '123');
+   define('DB_PASSWORD', 'postgrsql');
    define('DB_CHARSET', 'utf8');
    define('DB_DATABASE', 'venintrans');
    define('MAIL_USERNAME', 'produccionunsa@gmail.com');

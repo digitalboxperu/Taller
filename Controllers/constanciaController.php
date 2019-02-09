@@ -29,7 +29,15 @@ class ConstanciaController{
     public function Crud(){
            
 
-            $cargo = new Constancia();
+            //$constancia = new Constancia();
+            //$id=$_GET["id"];
+      //$bienes = new Bienes();
+            if(isset($_REQUEST['Id']))
+            {
+              $listaobjeto = $this->model->Oconstancia_byID($_REQUEST['Id']);
+              $constancia=$listaobjeto[0];
+              //$bienes =$this->modelbien->obtenerporidinventario($_REQUEST['Id']);
+            }
             /*
             $totalRecords = $this->model->getTotalRecords();
             $totalPages = ceil($totalRecords/resultsPerPage);
@@ -46,82 +54,76 @@ class ConstanciaController{
         }
 
     public function Guardar(){
+      foreach ($_REQUEST['lista_serie'] as $lista) {
+        echo "LISTATP ".$lista;
+      }
+      /*
        $constancia = new Constancia();
-       $constancia->numeroguia_serie=$_REQUEST['numeroguia_serie'];
-       //echo "ESTO FUNCIONA DEBERAS".$_REQUEST['numeroguia_serie'];
-       $constancia->numeroguia_cliente=$_REQUEST['numeroguia_cliente'];
+
        $constancia->idplaca=$_REQUEST['placatractor'];
        $constancia->cisterna=$_REQUEST['placacisterna'];
-       $constancia->volumen=$_REQUEST['volumen'];
        $constancia->recorrido=$_REQUEST['recorrido'];
-       $constancia->kilometraje=$_REQUEST['kilometraje'];
+       //$constancia->kilometraje=$_REQUEST['kilometraje'];
        $constancia->fechaprg=$_REQUEST['fechaprograma'];
        $constancia->fechacarga=$_REQUEST['fechaentrega'];
-       $constancia->checklist=$_REQUEST['lista'];
+       //$constancia->checklist=$_REQUEST['lista'];
        $constancia->serie=$_REQUEST['numeroguia_serie'];
        $constancia->numero=$_REQUEST['numeroguia_cliente'];
        $constancia->observacion=$_REQUEST['observacion'];
 
-      // echo "Fecha programada".$constancia->fechaprg;
+       $constancia->kilometraje=12;//SACAR KILOMETRaAJE CON VIAJES Y VIAJESDOC
+
        if ($constancia->checklist!=1 )
         {$constancia->checklist=0;}
         else{ $constancia->checklist=1;}  
-       $id_constancia=$this->model->Registrar($constancia);
+      $id=$_REQUEST['Id'];
+      if($id==-1)
+        $id_constancia=$this->model->Registrar($constancia);
+      else
+      {
+        //echo "ID SERIO ".$id;
+        $id_constancia=$this->model->Aptualizar($constancia,$id);
+      }
       // $constancia->Id =0;
-       echo '<input type="hidden" id="IdConstancia"  name="IdConstancia"  value="'.$id_constancia.'">';
-        //$output="<h2> TU PUEDES ERIKA</h2>";
-      // header('Location:'.BASE_URL.'Constancia'); 
-
-       //echo "Esto es un prueba de que todo salio bien ".$constancia->checklist;
-        /*if ($constancia->Id > 0 )
-            { $this->model->Actualizar($constancia);}
-        else{
-             
-        }*/
-
-        
+       echo '<input type="hidden" id="IdConstancia"  name="IdConstancia"  value="'.$id_constancia.'">';     */
     }
 
     public function Buscarplaca(){
 
         $placatractor=$_POST["placat"];
-        $placacisterna=$_POST["placac"];
-        $volumen=$_POST["volumen"];
-        //echo "HAY ".$placatractor."    ".$placacisterna."   ".$volumen;
-        //echo "BUSCARPLACA".$placatractor."<br>";
-
+        
         $Vcisterna=$this->model->Buscarplaca($placatractor);
         
         require_once 'Views/Constancia/busquedaplaca.php';
-        //header('Location:'.BASE_URL.'Constancia');    
         echo $output;
     }
 
     public function BuscarplacaCisterna()
     {
         $placacisterna=$_POST["placac"];
-        //echo "la placa cisterna".$placacisterna;
         $placatractor=$_POST["placat"];
-        //echo "BUSCARPLACA".$placatractor."<br>";
         $fila=$this->model->BuscarplacaCisterna($placacisterna);
         require_once 'Views/Constancia/busquedaplacaconstancia.php';
-        //header('Location:'.BASE_URL.'Constancia');    
         echo $output;  
     }
 
     public function Detalle_guardar()
     {
         $dia=$_POST["dia"];
-        //echo "la placa cisterna".$placacisterna;
         $lugar=$_POST["lugar"];
         $inicio=$_POST["inicio"];
         $fin=$_POST["fin"];
         $excesovelocidad=$_POST["excesovelocidad"];
         $idconstancia=$_POST["idconstancia"];
-
-        //echo "BUSCARPLACA".$dia."<br>";
         $fila=$this->model->guarda_detalle($dia,$lugar,$inicio,$fin,$excesovelocidad,$idconstancia);
     }
 
+    public function listar_tractor()
+    {
+      $cargo = new Constancia();
+        
+      $listatractores = $this->model->listar_tractores();
+      return $listatractores;
+    }
 }
 ?>

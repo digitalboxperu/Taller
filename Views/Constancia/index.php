@@ -1,5 +1,5 @@
 
-<div class="content">
+<dfiv class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -59,6 +59,11 @@
 											<td><?php echo	$r->fechaprg; ?></td>
 											<td><?php echo	$r->fechacarga; ?></td>
                                             <td><?php echo  $r->observacion; ?></td>
+                                            <td class="cell-actions">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-xs btn-warning buttonCrud" href="<?php echo BASE_URL;?>Constancia/Crud/<?php echo $r->id; ?>"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                </div>
+                                            </td>
                                         </tr>
                                  <?php endforeach; ?>
 
